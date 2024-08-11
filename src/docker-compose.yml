@@ -9,6 +9,11 @@ services:
   
   distributedcache:
     image: redis
+    # build:
+    #   context:  .
+    #   dockerfile: Dockerfile.redis
+    #   args:
+    #     - REGISTRY_MIRROR=https://hub-mirror.c.163.com
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -16,6 +21,7 @@ services:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
 
-  volumes:
-    postgres_catalog:  
-    postgres_basket:
+volumes:
+  postgres_catalog:
+  postgres_basket:
+    

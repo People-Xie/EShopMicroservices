@@ -1,0 +1,3 @@
+FROM redis:latest
+
+ARG REGISTRY_MIRROR=https://hub-mirror.c.163.com
