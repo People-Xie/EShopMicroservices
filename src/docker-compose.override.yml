@@ -30,6 +30,15 @@ services:
     restart: always
     ports: 
       - "6379:6379"
+
+  orderdb:
+    container_name: orderdb
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=sirius
+    restart: always
+    ports:
+      - "1433:1433"
       
   catalog.api:
     environment:
@@ -42,6 +51,38 @@ services:
     ports:
       - "6000:8080"
       - "6060:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  basket.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=basketdb;Port=5432;Database=BaskedDb;User Id=postgres;Password=sirius;Include Error Detail=true
+      - ConnectionStrings__Redis=distributedcache:6379
+      - GrpcSettings__DiscountUrl=https://discount.grpc:8081
+    depends_on:
+      - basketdb
+      - distributedcache
+      - discount.grpc 
+    ports:
+      - "6001:8080"
+      - "6061:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  discount.grpc:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Data Source=discountdb
+    ports:
+      - "6002:8080"
+      - "6062:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
