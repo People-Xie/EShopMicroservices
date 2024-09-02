@@ -16,7 +16,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public Task<int> SaveChangeAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return base.SaveChangesAsync(cancellationToken);
+        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

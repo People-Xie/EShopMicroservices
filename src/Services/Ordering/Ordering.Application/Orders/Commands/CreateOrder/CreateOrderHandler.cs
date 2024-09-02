@@ -12,6 +12,7 @@ public class CreateOrderHandler(IApplicationDbContext dbContext)
 
         dbContext.Orders.Add(order);
         await dbContext.SaveChangeAsync(cancellationToken);
+       
 
         return new CreateOrderResult(order.Id.Value);
     }
