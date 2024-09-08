@@ -12,7 +12,7 @@ public class DeleteOrderHandler(IApplicationDbContext context)
         if (order is null) throw new OrderNotFoundException(command.OrderId);
 
         context.Orders.Remove(order);
-        await context.SaveChangeAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return new DeleteOrderResult(true);
 

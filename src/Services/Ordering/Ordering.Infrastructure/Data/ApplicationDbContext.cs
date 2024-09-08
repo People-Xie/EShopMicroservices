@@ -14,12 +14,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
-    public Task<int> SaveChangeAsync(CancellationToken cancellationToken)
-    {
-        return base.SaveChangesAsync(cancellationToken);
-        
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //modelBuilder.Entity<Customer>().Property(c => c.Name).IsRequired().HasMaxLength(100);
